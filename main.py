@@ -37,3 +37,10 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.getenv("CLIENT_ID"),
                                                scope = "playlist-modify-private playlist-modify-public",
                                                show_dialog=True
                                                ))
+
+# Create a new Spotify playlist
+user_id = sp.current_user()["id"]
+print(user_id)
+print("\n"*10)
+playlist = sp.user_playlist_create(user=user_id, name=f"Billboard Hot 100 - {date.strftime('%Y-%m-%d')}", public=False)
+playlist_id = playlist["id"]
