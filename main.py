@@ -44,3 +44,19 @@ print(user_id)
 print("\n"*10)
 playlist = sp.user_playlist_create(user=user_id, name=f"Billboard Hot 100 - {date.strftime('%Y-%m-%d')}", public=False)
 playlist_id = playlist["id"]
+
+# Search for each song on Spotify and add to playlist
+track_uris = []
+for song in song_names:
+    result = sp.search(q=song, type="track", limit=1)
+    try:
+        uri = result["tracks"]["items"][0]["uri"]
+        track_uris.append(uri)
+    except IndexError:
+        print(f"Song '{song}' not found on Spotify. Skipping.")
+
+if track_uris:
+    sp.playlist_add_items(playlist_id, track_uris)
+    print(f"Playlist created successfully with {len(track_uris)} songs!")
+else:
+    print("No songs were found on Spotify.")
